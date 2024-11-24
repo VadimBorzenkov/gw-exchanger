@@ -1,6 +1,6 @@
-# grpc-exchange
+# gw-exchanger
 
-grpc-exchange — это сервис на Go, предоставляющий функционал для работы с курсами валют. Сервис реализует хранение курсов валют в PostgreSQL и предоставляет API через gRPC для их получения. Проект поддерживает контейнеризацию с использованием Docker и Docker Compose.
+ge-exchanger — это сервис на Go, предоставляющий функционал для работы с курсами валют. Сервис реализует хранение курсов валют в PostgreSQL и предоставляет API через gRPC для их получения. Проект поддерживает контейнеризацию с использованием Docker и Docker Compose.
 
 ---
 
@@ -30,8 +30,8 @@ grpc-exchange — это сервис на Go, предоставляющий ф
 ### Клонирование репозитория
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/VadimBorzenkov/grpc-exchange.git
-   cd grpc-exchange
+   git clone https://github.com/VadimBorzenkov/gw-exchanger.git
+   cd gw-exchanger
 
 2. Скопируйте файл конфигурации:
     ````bash
@@ -50,7 +50,7 @@ grpc-exchange — это сервис на Go, предоставляющий ф
 2. Запустите сервисы:
     ````bash
     docker-compose up --build
-    
+
 3. Проверьте, что контейнеры запущены:
     ````bash
     docker ps
