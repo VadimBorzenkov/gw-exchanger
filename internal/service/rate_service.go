@@ -2,24 +2,25 @@ package service
 
 import (
 	"github.com/VadimBorzenkov/gw-exchanger/internal/config"
-	"github.com/VadimBorzenkov/gw-exchanger/internal/models"
 	"github.com/VadimBorzenkov/gw-exchanger/internal/repository"
 	"github.com/sirupsen/logrus"
 )
 
 type ExchangeService interface {
-	GetAllRates() ([]models.ExchangeRate, error)
-	GetRate(currency string) (*models.ExchangeRate, error)
+	GetAllRates() (map[string]float64, error)
+	GetRate(currency string) (float64, error)
 	ConvertCurrency(fromCurrency, toCurrency string, amount float64) (float64, error)
 }
 
+// exchangeService - реализация сервиса.
 type exchangeService struct {
-	storage repository.PostgresStorage
+	storage repository.ExchangeRateStorage
 	logger  *logrus.Logger
 	cfg     *config.Config
 }
 
-func NewExchangeService(storage repository.PostgresStorage, logger *logrus.Logger, cfg *config.Config) ExchangeService {
+// NewExchangeService создает новый экземпляр ExchangeService.
+func NewExchangeService(storage repository.ExchangeRateStorage, logger *logrus.Logger, cfg *config.Config) ExchangeService {
 	return &exchangeService{
 		storage: storage,
 		logger:  logger,
@@ -28,12 +29,12 @@ func NewExchangeService(storage repository.PostgresStorage, logger *logrus.Logge
 }
 
 // GetAllRates - получение всех курсов обмена
-func (s *exchangeService) GetAllRates() ([]models.ExchangeRate, error) {
+func (s *exchangeService) GetAllRates() (map[string]float64, error) {
 	return s.storage.GetExchangeRates()
 }
 
 // GetRate - получение курса обмена для конкретной валюты
-func (s *exchangeService) GetRate(currency string) (*models.ExchangeRate, error) {
+func (s *exchangeService) GetRate(currency string) (float64, error) {
 	return s.storage.GetExchangeRate(currency)
 }
 
@@ -52,6 +53,6 @@ func (s *exchangeService) ConvertCurrency(fromCurrency, toCurrency string, amoun
 	}
 
 	// Конвертация валюты
-	convertedAmount := (amount / fromRate.Rate) * toRate.Rate
+	convertedAmount := (amount / fromRate) * toRate
 	return convertedAmount, nil
 }

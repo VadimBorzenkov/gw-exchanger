@@ -56,8 +56,12 @@ func Run() {
 	// Регистрация сервиса
 	pb.RegisterExchangeServiceServer(grpcServer, &server{service: exchangeService})
 
-	// Ожидание на подключение по порту 50051
-	lis, err := net.Listen("tcp", ":50051")
+	port := config.GRPCPort
+	if port == "" {
+		port = "50051" // Значение по умолчанию
+	}
+	lis, err := net.Listen("tcp", ":"+port)
+
 	if err != nil {
 		log.Fatalf("Failed to listen on port 50051: %v", err)
 	}
